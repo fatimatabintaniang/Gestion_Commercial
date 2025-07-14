@@ -1,0 +1,23 @@
+{
+    "name": "nzobusiness/gestion_commercial",
+    "authors": [
+        {
+            "name": "fatima",
+            "email": "fatimatabintaniang8@gmail.com"
+        }
+    ],
+    "require": {},
+  "autoload": {
+    "psr-4": {
+      "App\\Entity\\": "src/entity/",
+      "App\\Enum\\": "src/entity/enums/",
+      "App\\Repository\\": "src/repository/",
+      "App\\Service\\": "src/services/",
+      "App\\Controller\\": "src/controllers/",
+      "App\\Core\\": "app/core/",
+      "App\\Core\\Abstract\\": "app/core/abstract/",
+      "App\\Core\\Middleware\\": "app/core/middlewares/",
+      "App\\Api\\": "src/api/"
+    }
+  }
+}
