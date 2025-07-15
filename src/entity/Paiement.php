@@ -4,13 +4,12 @@ namespace App\Entity;
 
 use DateTime;
 
- class Facture{
+ class Paiement{
     private int $id; 
     private string $numero;
     private DateTime $date;
     private float $montant;
-    private Commande $commande;
-    private Paiement $paiement;
+    private Facture $facture;
 
     public function __construct($id=null,$numero=null,$date=null,$montant=null)
     {
@@ -61,25 +60,13 @@ use DateTime;
         $this->montant = $montant;
     }
 
-        public function getCommande()
+        public function getFacture()
     {
-        return $this->commande;
+        return $this->facture;
     }
 
-        public function setCommande($commande)
+        public function setFacture($facture)
     {
-        $this->commande = $commande;
+        $this->facture = $facture;
     }
-
-    
-        public function getPaiement()
-    {
-        return $this->paiement;
-    }
-
-        public function setPaiement($paiement)
-    {
-        $this->paiement = $paiement;
-    }
-   
 }
