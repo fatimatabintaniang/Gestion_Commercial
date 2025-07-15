@@ -5,30 +5,26 @@ use PDO;
 use PDOException;
 
 class Database {
-  private static $instance = null;
-  private $pdo;
-  private function __construct() {
-    $host = $_ENV['DB_HOST'];
-    $db   = $_ENV['DB_NAME'];
-    $user = $_ENV['DB_USER'];
-    $pass = $_ENV['DB_PASSWORD'];
+    private static $connection = null;
 
-    try {
-      $this->pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
-      $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-      die("Erreur de connexion : " . $e->getMessage());
+    public static function getConnection()
+    {
+        if (self::$connection == null) {
+            $host = 'localhost';
+            $dbname = 'gestion_commercial';
+            $user = 'root';
+            $password = '';
+
+            try {
+                $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
+                self::$connection = new PDO($dsn, $user, $password);
+                self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                echo "Connexion réussie à MySQL !";
+            } catch (PDOException $e) {
+                echo "Erreur de connexion : " . $e->getMessage();
+            }
+        }
+        return self::$connection;
     }
-  }
-
-  public static function getInstance() {
-    if (self::$instance === null) {
-      self::$instance = new self();
-    }
-    return self::$instance;
-  }
-
-  public function getConnection() {
-    return $this->pdo;
-  }
+    private function __construct() {}
 }
