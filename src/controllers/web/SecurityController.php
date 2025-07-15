@@ -19,15 +19,12 @@ class SecurityController
     }
     public function login(): void
     {
-        $this->session->deleteFromSession('errors'); // Nettoyer les erreurs précédentes
+        $this->session->deleteFromSession('errors');
         $this->session->deleteFromSession('old');
 
         extract($_POST);
 
-        $result = $this->validator->validate([
-            'email' => $email ?? '',
-            'password' => $password ?? ''
-        ], [
+        $validationRules = [
             'email' => [
                 'required' => "L'email est obligatoire",
                 'email' => "L'email n'est pas valide"
@@ -36,7 +33,12 @@ class SecurityController
                 'required' => "Le mot de passe est obligatoire",
                 'min:6' => "Le mot de passe doit contenir au moins 6 caractères"
             ]
-        ]);
+        ];
+
+        $result = $this->validator->validate(
+            ['email' => $email ?? '', 'password' => $password ?? ''],
+            $validationRules
+        );
 
         if ($result) {
             $user = $this->authService->seconnecter($email, $password);
@@ -48,7 +50,6 @@ class SecurityController
             $this->validator->addError("connexion", "Login ou mot de passe incorrect");
         }
 
-        // Stocker les erreurs et les données
         $this->session->set("errors", $this->validator->getErrors());
         $this->session->set('old', $_POST);
         header("location: " . $_ENV['WEB_ROOT'] . "/form");
@@ -61,5 +62,9 @@ class SecurityController
         $this->session->deleteFromSession('errors');
         $this->session->deleteFromSession('old');
     }
-    public function logout(): void {}
+    public function logout(): void {
+        $this->session->destroy();
+        header("location: " . $_ENV['WEB_ROOT'] . "/form");
+        exit;
+    }
 }

@@ -29,7 +29,11 @@ class Session
         return $_SESSION[$key] ?? null; // Retourne null si la clé n'existe pas
     }
 
-    public function destroy() {}
+    public function destroy() {
+        session_unset(); // Libère toutes les variables de session
+        session_destroy(); // Détruit la session
+        self::$instance = null; // Réinitialise l'instance pour permettre une nouvelle session
+    }
 
     public function deleteFromSession($key)
     {
