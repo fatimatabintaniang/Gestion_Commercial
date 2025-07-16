@@ -12,13 +12,23 @@ class CommandeController extends AbstractController
     {
         $this->commandeService = CommandeService::getInstance();
     }
-    public function index(): void
-    {
-        $commandes = $this->commandeService->getAllCommandes();
-        dd($commandes);
-        // require_once "../views/commande/listeCommande.html.php";
-        render_view('commande/listeCommande' , 'baseLayout' , ['commandes' => $commandes]); 
+   public function index(): void
+{
+    
+    $filters = [
+        'numero' => $_GET['search'] ?? null,
+        'date' => $_GET['Date_search'] ?? null,
+        'client_nom' => $_GET['client_search'] ?? null
+    ];
+    // dd($filters);
 
-    }
+    // Appel unique du service
+    $commandes = $this->commandeService->getAllCommandes($filters);
+
+    render_view('commande/listeCommande', 'baseLayout', [
+        'commandes' => $commandes
+    ]);
+}
+
     public function store(): void {}
 }

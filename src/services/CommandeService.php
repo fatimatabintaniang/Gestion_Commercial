@@ -23,10 +23,12 @@ class CommandeService
         $this->commandeRepo = CommandeRepo::getInstance();
     }
 
-    public function getAllCommandes()
-    {
-        return $this->commandeRepo->getAllCommandes();
-    }
+  public function getAllCommandes($filters = [])
+{
+    return $this->commandeRepo->getCommandes($filters);
+}
+
+   
 
     public function getCommandeById($id)
     {

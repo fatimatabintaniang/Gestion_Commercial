@@ -6,6 +6,7 @@ use App\Core\Abstract\AbstractRepository;
 use App\Core\Database;
 use App\Entity\Vendeur;
 use App\Entity\Client;
+use App\Entity\Commande;
 use PDOException;
 
 class CommandeRepo extends AbstractRepository
@@ -25,11 +26,40 @@ class CommandeRepo extends AbstractRepository
         $this->table = "commande";
     }
 
-    public function getAllCommandes()
-    {
-        $sql = "SELECT * FROM " . $this->table;
-        return parent::query($sql, [], null, false);
+ public function getCommandes($filters = [])
+{
+    $sql = "SELECT c.*, 
+                   p.nom AS client_nom, 
+                   p.prenom AS client_prenom, 
+                   p.telephone AS client_telephone,
+                   p.email AS client_email
+            FROM " . $this->table . " c
+            JOIN personne p ON c.client_id = p.id
+            WHERE c.deleted = 'false'";
+    
+    $params = [];
+
+    if (!empty($filters['numero'])) {
+        $sql .= " AND c.numero = ?";
+        $params[] = (string)$filters['numero']; // Conversion explicite
     }
+
+    if (!empty($filters['date'])) {
+        $sql .= " AND DATE(c.date) = ?";
+        $params[] = $filters['date'];
+    }
+
+    if (!empty($filters['client_nom'])) {
+        $sql .= " AND p.nom LIKE ?";
+        $params[] = '%' . $filters['client_nom'] . '%';
+    }
+
+    // Debug final
+    error_log("Requête finale: " . $sql);
+    error_log("Paramètres finaux: " . print_r($params, true));
+
+    return parent::query($sql, $params);
+}
 
     public function getCommandeById($id)
     {

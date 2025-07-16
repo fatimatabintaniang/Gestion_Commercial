@@ -4,21 +4,22 @@
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-bold text-gray-800">Liste des Commandes</h1>
             <div class="flex items-center space-x-4">
-                <span class="text-sm text-gray-600">Vendeur: John Doe</span>
+                <span class="text-sm text-gray-600">Vendeur: <?= $_SESSION['prenom'] ?? 'Indefined' ?></span>
                 <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
-                    <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+                    <i class="fas fa-sign-out-alt mr-2" name="logout"></i>Déconnexion
                 </button>
             </div>
         </div>
 
         <!-- Filters and Actions -->
         <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <form action="<?= $_ENV['WEB_ROOT'] ?>/accueil" method="GET" class="flex items-end ">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Client Filter -->
                 <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Rechercher</label>
                         <div class="relative">
-                            <input type="text" placeholder="Nom du client..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <input type="text" name="client_search" placeholder="Nom du client..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                     </div>
                 </div>
@@ -27,24 +28,32 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Filtrer par date</label>
                     <div class="flex space-x-2">
-                        <input type="date" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <span class="flex items-center">à</span>
-                        <input type="date" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <input type="date" name="Date_search" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     </div>
+                     
                 </div>
-
-                <!-- Search and Add -->
-                <div class="flex items-end space-x-2">
-                    <div class="flex-1">
+                <div class="flex-1">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Rechercher</label>
                         <div class="relative">
-                            <input type="text" placeholder="Numéro de commande..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            <input type="text" name="search" placeholder="Numéro de commande..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                         </div>
-                    </div>
-                    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center">
-                        <i class="fas fa-plus mr-2"></i>Nouvelle
+                </div>
+            </div>
+                <!-- Search and Add -->
+                <div class="flex items-end space-x-2 mx-4">
+                       
+                    <button class="flex-1 px-4 py-2 bg-blue-600 text-white  rounded-lg focus:ring-2 focus:ring-blue-500">
+                            Filtrer
                     </button>
+                    
+                    </form>
+                    <a href="<?= $_ENV['WEB_ROOT'] ?>/accueil" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center">
+                        <i class="ri-loop-right-line"></i>
+                    </a> 
+                    <a href="<?= $_ENV['WEB_ROOT'] ?>/accueil" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center">
+                        <i class="fas fa-plus mr-2"></i>New
+                    </a>
                 </div>
             </div>
         </div>
@@ -60,7 +69,7 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Facture</th>
+                            <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Facture</th> -->
                             <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
@@ -74,29 +83,28 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                            <span class="text-blue-600 font-medium">JD</span>
+                                            <span class="text-blue-600 font-medium"> <?= substr($commande['client_prenom'], 0, 1) . substr($commande['client_nom'], 0, 1) ?></span>
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900">Jean Dupont</div>
-                                            <div class="text-sm text-gray-500">jean.dupont@example.com</div>
+                                            <div class="text-sm font-medium text-gray-900"><?= htmlspecialchars($commande['client_prenom'] . ' ' . htmlspecialchars($commande['client_nom'])) ?></div>
+                                            <div class="text-sm text-gray-500"><?= htmlspecialchars($commande['client_email'])?></div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">15/07/2023</div>
-                                    <div class="text-sm text-gray-500">10:45</div>
+                                    <div class="text-sm text-gray-900"><?= $commande['date'] ?></div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900">1 245,50 €</div>
+                                    <div class="text-sm font-medium text-gray-900"><?= $commande['montant'] ?></div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                        Payée
+                                        <?= htmlspecialchars($commande['statut'])?>
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <!-- <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-blue-600 font-medium">FAC-2023-001</div>
-                                </td>
+                                </td> -->
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-2">
                                         <button class="text-blue-600 hover:text-blue-900">
