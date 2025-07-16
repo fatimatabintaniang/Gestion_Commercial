@@ -16,6 +16,8 @@
       "App\\Repository\\": "src/repository/",
       "App\\Service\\": "src/services/",
       "App\\Controller\\": "src/controllers/",
+      "App\\Controller\\Api\\": "src/controllers/api",
+      "App\\Controller\\Web\\": "src/controllers/web",
       "App\\Core\\": "app/core/",
       "App\\Helper\\": "app/helpers/",
       "App\\Config\\": "app/config/bootstrap",

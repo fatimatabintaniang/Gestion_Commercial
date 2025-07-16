@@ -1,18 +1,37 @@
 <?php
+
 namespace App\Core\Abstract;
 
-abstract class AbstractRepository {
-  protected $db;
+use App\Core\Database;
+use PDO;
 
-  public function __construct($db) {
-    $this->db = $db;
-  }
+abstract class AbstractRepository
+{
 
-  protected function executeQuery($sql, $params = []) {
-    // prepare + execute + return results
-  }
+    protected $connection;
+    protected $table;
 
-  protected function executeUpdate($sql, $params = []) {
-    // prepare + execute for insert/update/delete
-  }
+    public function __construct()
+    {
+        $this->connection = Database::getConnection();
+    }
+
+    public function query(?string $query = null, array $data = [], ?callable $mapper = null, $single = false): mixed
+    {
+        if ($query == null) {
+            $query = "SELECT * FROM $this->table";
+        }
+        $st = $this->connection->prepare($query);
+        $st->execute($data);
+
+        if ($single) {
+            $result = $st->fetch(PDO::FETCH_ASSOC);
+            if (!$result) return [];
+            return $mapper ? $mapper($result) : $result;
+        }
+
+
+        $results = $st->fetchAll(PDO::FETCH_ASSOC);
+        return $mapper ? array_map($mapper, $results) : $results;
+    }
 }
