@@ -1,11 +1,11 @@
 <?php
 
-use App\Controller\Web\PersonneController;
+use App\Controller\Web\CommandeController;
 use App\Controller\Web\SecurityController;
 
 $routes = [
     "accueil" => [
-        'controller' => PersonneController::class,
+        'controller' => CommandeController::class,
         'action' => "index",
     ],
     "form" => [

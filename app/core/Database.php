@@ -10,10 +10,10 @@ class Database {
     public static function getConnection()
     {
         if (self::$connection == null) {
-            $host = 'localhost';
-            $dbname = 'gestion_commercial';
-            $user = 'root';
-            $password = '';
+            $host = $_ENV['DB_HOST'];
+            $dbname = $_ENV['DB_NAME'];
+            $user = $_ENV['DB_USER'];
+            $password = $_ENV['DB_PASSWORD'];
 
             try {
                 $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";

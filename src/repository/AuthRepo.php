@@ -1,13 +1,13 @@
 <?php
 
-namespace App\repository;
+namespace App\Repository;
 
-use App\app\core\abstract\AbstractRepository;
-use App\entities\Medecin;
-use App\entities\Patient;
+use App\Core\Abstract\AbstractRepository;
+use App\Entity\Vendeur;
+use App\Entity\Client;
 use PDOException;
 
-class PersonneRepository extends AbstractRepository
+class AuthRepo extends AbstractRepository
 {
 
     public function __construct()
@@ -15,32 +15,32 @@ class PersonneRepository extends AbstractRepository
         parent::__construct();
         $this->table = "personne";
     }
-    public function selectPatientByTel($tel)
+    public function selectClientByTel($tel)
     {
-        $sql = "SELECT * FROM personne WHERE tel = ? AND typepersonne = 'patient'";
+        $sql = "SELECT * FROM personne WHERE tel = ? AND typepersonne = 'Client'";
         echo $sql;
         die;
         $rs = parent::query($sql, [$tel], null, true);
         if ($rs) {
-            if ($rs['typePersonne'] == "patient") {
-                return Patient::toObject($rs);
-            } elseif ($rs['typePersonne'] == "medcin") {
-                return Medecin::toObject($rs);
+            if ($rs['typePersonne'] == "Client") {
+                return Client::toObject($rs);
+            } elseif ($rs['typePersonne'] == "Vendeur") {
+                return Vendeur::toObject($rs);
             }
         }
         return null;
     }
 
-    public function insertPatient($patient)
+    public function insertClient($Client)
     {
-        $sql = "INSERT INTO personne (nom, tel, typepersonne) VALUES (?, ?, 'patient')";
+        $sql = "INSERT INTO personne (nom, tel, typepersonne) VALUES (?, ?, 'Client')";
         try {
             $ps = $this->connection->prepare($sql);
-            $ps->execute([$patient->getNom(), $patient->getTel()]);
+            $ps->execute([$Client->getNom(), $Client->getTel()]);
 
-            $patient->setId($this->connection->lastInsertId());
+            $Client->setId($this->connection->lastInsertId());
         } catch (PDOException $e) {
-            echo "Erreur lors de l'insertion du patient : " . $e->getMessage();
+            echo "Erreur lors de l'insertion du Client : " . $e->getMessage();
         }
     }
 }
