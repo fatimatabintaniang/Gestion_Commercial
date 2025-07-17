@@ -58,7 +58,7 @@ class CommandeRepo extends AbstractRepository
     error_log("Requête finale: " . $sql);
     error_log("Paramètres finaux: " . print_r($params, true));
 
-    return parent::query($sql, $params);
+    return parent::query($sql, $params , [Commande::class,"toObject"]);
 }
 
     public function getCommandeById($id)
