@@ -4,7 +4,7 @@
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
     <h1 class="text-3xl font-bold text-gray-800">Liste des Commandes</h1>
     <div class="flex items-center gap-4 w-full md:w-auto">
-        <span class="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">Vendeur: <?= $_SESSION['prenom'] ?? 'Indefined' ?></span>
+        <span class="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">Vendeur: <?= $_SESSION['user']->getPrenom() ?? 'Indefined' ?> <?= $_SESSION['user']->getNom() ?? 'Indefined' ?></span>
         <!-- Bouton pour ouvrir le modal -->
         <button onclick="document.getElementById('add-order-modal').showModal()" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity">
             <i class="fas fa-plus mr-2"></i>Nouveau
@@ -284,18 +284,7 @@
                                 <a href="#" aria-current="page" class="z-10 bg-blue-50 border-blue-500 text-blue-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
                                     1
                                 </a>
-                                <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                    2
-                                </a>
-                                <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                    3
-                                </a>
-                                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-                                    ...
-                                </span>
-                                <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-                                    8
-                                </a>
+                              
                                 <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                                     <span class="sr-only">Suivant</span>
                                     <i class="fas fa-chevron-right"></i>

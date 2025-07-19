@@ -79,10 +79,10 @@
         <div class="p-4 border-t border-gray-200">
             <div class="flex items-center">
                 <div class="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold">
-                    JD
+                    <?= substr($_SESSION['user']->getPrenom(), 0, 1) . substr($_SESSION['user']->getNom(), 0, 1) ?>
                 </div>
                 <div class="ml-3 hidden md:block">
-                    <div class="font-medium text-gray-800">Jean Dupont</div>
+                    <div class="font-medium text-gray-800"><?= $_SESSION['user']->getPrenom() ?? 'Indefined' ?> <?= $_SESSION['user']->getNom() ?? 'Indefined' ?></div>
                     <div class="text-xs text-gray-500">Administrateur</div>
                 </div>
             </div>
