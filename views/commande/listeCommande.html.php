@@ -222,9 +222,9 @@
                                         </div>
                                     </div>
                                 </td>
-                                <!-- <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900"><?= date('d/m/Y', strtotime($commande['date'])) ?></div>
-                                </td> -->
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900"><?= date('d/m/Y', strtotime($commande->getDate())) ?></div>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium text-gray-900"><?= number_format($commande->getMontant(), 2, ',', ' ') ?> €</div>
                                 </td>

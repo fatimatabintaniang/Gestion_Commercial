@@ -26,7 +26,7 @@ class CommandeController extends AbstractController
         'date' => $_GET['Date_search'] ?? null,
         'client_nom' => $_GET['client_search'] ?? null
     ];
-    // dd($filters);
+    // dd($_SESSION['user']);
 
     // Appel unique du service
     $commandes = $this->commandeService->getAllCommandes($filters);
