@@ -31,6 +31,7 @@ class Router{
             $p = new $gards['auth']();
             $p();
             // dd($gards['auth']);
+            dd($p);
         }
 
         $controller = new $route["controller"]();
