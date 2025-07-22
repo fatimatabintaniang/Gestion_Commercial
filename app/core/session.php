@@ -2,19 +2,13 @@
 
 namespace App\Core;
 
-class Session
+use App\Core\Abstract\Singleton;
+
+class Session extends Singleton
 {
-    private static $instance = null;
+    
 
-    public static function getInstance(): self
-    {
-        if (self::$instance == null) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
-
-    private function __construct()
+    public function __construct()
     {
         if (session_status() == PHP_SESSION_NONE) session_start();
     }
@@ -32,7 +26,6 @@ class Session
     public function destroy() {
         session_unset(); // Libère toutes les variables de session
         session_destroy(); // Détruit la session
-        self::$instance = null; // Réinitialise l'instance pour permettre une nouvelle session
     }
 
     public function deleteFromSession($key)

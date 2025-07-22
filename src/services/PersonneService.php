@@ -2,26 +2,21 @@
 
 namespace App\Service;
 
+use App\Core\Abstract\Singleton;
 use App\Entity\Commande;
 use App\Repository\CommandeRepo;
 use App\Repository\PersonneRepo;
 
-class PersonneService
+class PersonneService extends Singleton
 {
     private $commandeRepo;
     private $personne;
-    private static $instance = null;
-    private function __construct()
+    public function __construct()
     {
         $this->commandeRepo = CommandeRepo::getInstance();
         $this->personne = PersonneRepo::getInstance();
     }
-    public static function getInstance(){
-        if (self::$instance == null) {
-            self::$instance = new self();
-            }
-            return self::$instance;
-    }
+   
 
     public function getAllClients()
     {

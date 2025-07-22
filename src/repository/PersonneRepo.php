@@ -10,19 +10,12 @@ use PDOException;
 
 class PersonneRepo extends AbstractRepository
 {
-    private static $instance;
     public function __construct()
     {
         $this->connection = Database::getConnection();
         $this->table = "personne";
     }
-    public static function getInstance(){
-            if (self::$instance == null) {
-                self::$instance = new self();
-                }
-                return self::$instance;
-        }
-
+  
     public function getUserConnect($email, $password)
     {
         $sql = "SELECT * FROM personne WHERE email = ? AND password = ?";

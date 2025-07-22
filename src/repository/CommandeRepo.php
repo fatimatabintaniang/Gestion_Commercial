@@ -12,7 +12,7 @@ use PDOException;
 class CommandeRepo extends AbstractRepository
 {
     
-    private function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->table = "commande";

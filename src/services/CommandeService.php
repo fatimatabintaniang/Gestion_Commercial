@@ -2,24 +2,25 @@
 
 namespace App\Service;
 
+use App\Core\Abstract\Singleton;
 use App\Entity\Commande;
 use App\Repository\CommandeRepo;
 
-class CommandeService
+class CommandeService extends Singleton
 {
     private $commandeRepo;
     
 
-    private function __construct()
+    public function __construct()
     {
         $this->commandeRepo = CommandeRepo::getInstance();
     }
 
-  public function getAllCommandes($filters = [])
-{
-    return $this->commandeRepo->getCommandes($filters);
-}
-
+    public function getAllCommandes($filters = [])
+    {
+        return $this->commandeRepo->getCommandes($filters);
+    }
+    
    
 
     public function getCommandeById($id)
