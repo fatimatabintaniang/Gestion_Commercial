@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Core\Abstract;
-
+use App\Core\Abstract\Singleton;
 use App\Core\Database;
 use PDO;
 
-abstract class AbstractRepository
+abstract class AbstractRepository extends Singleton
 {
 
     protected $connection;
@@ -34,4 +34,6 @@ abstract class AbstractRepository
         $results = $st->fetchAll(PDO::FETCH_ASSOC);
         return $mapper ? array_map($mapper, $results) : $results;
     }
+
+
 }

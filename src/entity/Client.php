@@ -40,10 +40,10 @@ use App\Enum\TypePersonne;
         public static function toObject(array $rs): self{
         $p = new self();
         $p->setId($rs['id'] ?? null);
-        $p->setNom($rs['client_nom']);
-        $p->setPrenom($rs['client_prenom']);
-        $p->setEmail($rs['client_email']);
-        $p->setTelephone($rs['client_telephone']);
+        $p->setNom($rs['nom']);
+        $p->setPrenom($rs['prenom']);
+        $p->setEmail($rs['email']);
+        $p->setTelephone($rs['telephone']);
         return $p;
     }
 }

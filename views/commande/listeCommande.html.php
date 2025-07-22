@@ -26,21 +26,30 @@
         </form>
         
         <div class="p-6 space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 space-x-8">
                 <!-- Client -->
-              <form action="" method="get" class="flex space-x-2">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Client</label>
-                    <input type="search" name="tel_client" placeholder="telephone" id=""class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                </div>
+              <form method="get" action="" class="flex space-x-2">
+                <input type="hidden" name="open_modal" value="1">
                 
-                <!-- Date de commande -->
                 <div>
-                    <button class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white mt-6 rounded-full px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Client</label>
+                    <input type="search" name="tel_client" placeholder="telephone"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <button type="submit"
+                        class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white mt-6 rounded-full px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity">
                         Rechercher
                     </button>
                 </div>
-              </form>
+            </form>
+
+
+              <div class="flex items-center mt-3">
+                <?php if ($client !== null): ?>
+                    <span><?= $client->getNom() ?></span>
+                <?php endif; ?>
+              </div>
             </div>
             
             <!-- Liste des produits -->
@@ -297,3 +306,11 @@
             <?php endif; ?>
         </div>
     </main>
+
+    <script>
+  window.addEventListener('DOMContentLoaded', () => {
+    <?php if (!empty($openModal)): ?>
+      document.getElementById('add-order-modal').showModal();
+    <?php endif; ?>
+  });
+</script>

@@ -41,6 +41,6 @@ class PersonneRepo extends AbstractRepository
 
   public function findByTel($tel){
     $sql = "SELECT * FROM personne WHERE telephone = ?";
-    return parent::query($sql, [$tel], null, true);
+    return parent::query($sql, [$tel], [Client::class,"toObject"], true);
   }
 }

@@ -11,15 +11,7 @@ use PDOException;
 
 class CommandeRepo extends AbstractRepository
 {
-    private static $instance = null;
-
-    public static function getInstance(): self
-    {
-        if (self::$instance == null) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
+    
     private function __construct()
     {
         parent::__construct();
@@ -29,10 +21,10 @@ class CommandeRepo extends AbstractRepository
  public function getCommandes($filters = [])
 {
     $sql = "SELECT c.*, 
-                   p.nom AS client_nom, 
-                   p.prenom AS client_prenom, 
-                   p.telephone AS client_telephone,
-                   p.email AS client_email
+                   p.nom AS nom, 
+                   p.prenom AS prenom, 
+                   p.telephone AS telephone,
+                   p.email AS email
             FROM " . $this->table . " c
             JOIN personne p ON c.client_id = p.id
             WHERE c.deleted = 'false'";

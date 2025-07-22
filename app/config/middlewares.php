@@ -1,6 +1,8 @@
 <?php
+use App\Core\Gard;
 
-// $middlewares=[
-//                        "auth"=>Auth::class,
-//                        'crypt'=>"CryptPassword::class
-//     ];
+
+$middlewares=[
+        "auth"=>Gard::class,
+        // 'crypt'=>"CryptPassword::class
+    ];

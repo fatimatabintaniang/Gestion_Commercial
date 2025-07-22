@@ -26,17 +26,18 @@ class CommandeController extends AbstractController
         'date' => $_GET['Date_search'] ?? null,
         'client_nom' => $_GET['client_search'] ?? null
     ];
-    // dd($_SESSION['user']);
-
+  
     // Appel unique du service
     $commandes = $this->commandeService->getAllCommandes($filters);
+    $client = null;
     if (isset($_GET['tel_client'])) {
         $client = $this->personneService->getClientByTel($_GET['tel_client']);
-        dd($client);
+        $openModal = true;
+        // dd($client);
     }
 
     render_view('commande/listeCommande', 'baseLayout', [
-        'commandes' => $commandes
+        'commandes' => $commandes,'client' => $client,'openModal' => $openModal ?? false,
     ]);
 }
 

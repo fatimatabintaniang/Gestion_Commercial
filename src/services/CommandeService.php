@@ -8,15 +8,7 @@ use App\Repository\CommandeRepo;
 class CommandeService
 {
     private $commandeRepo;
-    private static $instance = null;
     
-    public static function getInstance(): self
-    {
-        if (self::$instance == null) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
 
     private function __construct()
     {

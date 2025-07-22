@@ -7,6 +7,7 @@ $routes = [
     "accueil" => [
         'controller' => CommandeController::class,
         'action' => "index",
+        'gards' => ["auth"]
     ],
     "form" => [
         'controller' => SecurityController::class,
