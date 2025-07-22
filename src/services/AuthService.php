@@ -10,7 +10,7 @@ class AuthService extends Singleton
 {
     private $personneRepository;
 
-    private function __construct(){
+    public function __construct(){
     $this->personneRepository = PersonneRepo::getInstance();
     }
    

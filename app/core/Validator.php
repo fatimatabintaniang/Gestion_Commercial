@@ -9,7 +9,7 @@ class Validator extends Singleton
     private array $errors = [];
     private array $rules = [];
 
-    private function __construct()
+    public function __construct()
     {
         // Initialisation des règles de base via make()
         $this->make('required', function ($value, $key, $message = "Ce champ est obligatoire"): bool {
