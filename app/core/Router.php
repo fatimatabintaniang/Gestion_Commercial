@@ -26,6 +26,13 @@ class Router{
             // ErrorController::error404();
             echo 'Error';
         }
+        if (!empty($route['gards'])) {
+            require_once ROOT_PATH . "/app/config/gards.php";
+            $p = new $gards['auth']();
+            $p();
+            // dd($gards['auth']);
+        }
+
         $controller = new $route["controller"]();
 
         $controller->{$route["action"]}();

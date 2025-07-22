@@ -23,7 +23,9 @@
       "App\\Config\\": "app/config/bootstrap",
       "App\\Core\\Abstract\\": "app/core/abstract/",
       "App\\Core\\Middleware\\": "app/core/middlewares/",
-      "App\\Api\\": "src/api/"
+      "App\\Api\\": "src/api/",
+      "App\\Core\\Gard\\": "app/core/gards/"
+
     }
   }
 }
