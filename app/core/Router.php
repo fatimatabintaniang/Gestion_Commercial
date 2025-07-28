@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Core;
-
-
-class Router{
+class Router
+{
     public static function resolve()
     {
 
@@ -20,18 +19,19 @@ class Router{
             exit;
         }
         $route = $routes[$url];
-            // dd($route);
-        //Traitement middlewares
+       
         if (!class_exists($route["controller"]) || !method_exists($route["controller"], $route["action"])) {
             // ErrorController::error404();
             echo 'Error';
+            exit;
         }
         if (!empty($route['gards'])) {
             require_once ROOT_PATH . "/app/config/gards.php";
-            $p = new $gards['auth']();
-            $p();
-            // dd($gards['auth']);
-            dd($p);
+            foreach ($route['gards'] as $guardName) {
+                $guardClass = $gards[$guardName];
+                $guard = new $guardClass();
+                $guard();
+            }
         }
 
         $controller = new $route["controller"]();

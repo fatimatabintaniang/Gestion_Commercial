@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Core\Gard;
 
 use App\Core\Abstract\Singleton;
