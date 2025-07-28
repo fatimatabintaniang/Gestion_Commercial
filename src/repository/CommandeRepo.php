@@ -29,7 +29,8 @@ class CommandeRepo extends AbstractRepository
             JOIN personne p ON c.client_id = p.id
             WHERE c.deleted = 1";
     
-    $params = [];
+    $filterDefinitions = [];
+
 
     if (!empty($filters['numero'])) {
         $sql .= " AND c.numero = ?";
