@@ -3,9 +3,6 @@
 namespace App\repository;
 
 use App\Core\Abstract\AbstractRepository;
-use App\Core\Database;
-use App\Entity\Vendeur;
-use App\Entity\Client;
 use App\Entity\Commande;
 use PDOException;
 
@@ -27,13 +24,13 @@ class CommandeRepo extends AbstractRepository
                    p.email AS email
             FROM " . $this->table . " c
             JOIN personne p ON c.client_id = p.id
-            WHERE c.deleted = 'false'";
+            WHERE c.deleted = 1";
     
     $params = [];
 
     if (!empty($filters['numero'])) {
         $sql .= " AND c.numero = ?";
-        $params[] = (string)$filters['numero']; // Conversion explicite
+        $params[] = (string)$filters['numero']; 
     }
 
     if (!empty($filters['date'])) {
@@ -57,18 +54,5 @@ class CommandeRepo extends AbstractRepository
     {
         $sql = "SELECT * FROM " . $this->table . " WHERE id = ?";
         return parent::query($sql, [$id], null, true);
-    }
-
-    public function insertCommande($commande)
-    {
-        $sql = "INSERT INTO " . $this->table . " (client_id, vendeur_id, date_commande) VALUES (?, ?, ?)";
-        try {
-            $ps = $this->connection->prepare($sql);
-            $ps->execute([$commande->getClientId(), $commande->getVendeurId(), $commande->getDateCommande()]);
-            return $this->connection->lastInsertId();
-        } catch (PDOException $e) {
-            echo "Erreur lors de l'insertion de la commande : " . $e->getMessage();
-            return null;
-        }
     }
 }
