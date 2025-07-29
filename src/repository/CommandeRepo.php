@@ -3,7 +3,10 @@
 namespace App\repository;
 
 use App\Core\Abstract\AbstractRepository;
+use App\Core\Database;
 use App\Core\Filter;
+use App\Entity\Vendeur;
+use App\Entity\Client;
 use App\Entity\Commande;
 use PDOException;
 
@@ -18,53 +21,42 @@ class CommandeRepo extends AbstractRepository
         $this->filter = Filter::getInstance();
     }
 
-    public function getCommandes($filters = [])
-    {
-        $sql = "SELECT c.*, 
-                   p.nom AS nom, 
-                   p.prenom AS prenom, 
-                   p.telephone AS telephone,
-                   p.email AS email
-            FROM " . $this->table . " c
+public function getCommandes(array $filters = [])
+{
+    $sql = "SELECT c.*, p.nom, p.prenom, p.telephone, p.email
+            FROM commande c
             JOIN personne p ON c.client_id = p.id
             WHERE c.deleted = 1";
-    
+
     $params = [];
 
-    if (!empty($filters['numero'])) {
-        $sql .= " AND c.numero = ?";
-        $params[] = (string)$filters['numero']; 
-    }
+    $filterMap = [
+        'numero' => [
+            'condition' => ' AND c.numero = ?',
+            'transform' => fn($v) => (string)$v,
+        ],
+        'date' => [
+            'condition' => ' AND DATE(c.date) = ?',
+            'transform' => fn($v) => $v,
+        ],
+        'client_nom' => [
+            'condition' => ' AND LOWER(p.nom) LIKE LOWER(?)',
+            'transform' => fn($v) => '%' . trim($v) . '%',
+        ],
+    ];
 
-        if (!empty($filters['date'])) {
-            $filterDefinitions['c.date'] = [
-                'type' => 'date',
-                'value' => $filters['date']
-            ];
+    foreach ($filterMap as $key => $config) {
+        if (!empty($filters[$key])) {
+            $sql .= $config['condition'];
+            $params[] = $config['transform']($filters[$key]);
         }
-
-        if (!empty($filters['client_nom'])) {
-            $filterDefinitions['p.nom'] = [
-                'type' => 'like',
-                'value' => $filters['client_nom']
-            ];
-        }
-
-        // Application des filtres
-        $result = $this->filter->apply($sql, $filterDefinitions);
-        $sql = $result['query'];
-        $params = $result['params'];
-
-        // Debug final
-        error_log("Requête finale: " . $sql);
-        error_log("Paramètres finaux: " . print_r($params, true));
-
-        return parent::query($sql, $params, [Commande::class, "toObject"]);
     }
 
-    public function getCommandeById($id)
-    {
-        $sql = "SELECT * FROM " . $this->table . " WHERE id = ?";
-        return parent::query($sql, [$id], null, true);
-    }
+    // Debug
+    error_log("Requête SQL: " . $sql);
+    error_log("Paramètres: " . print_r($params, true));
+
+    return parent::query($sql, $params, [Commande::class, "toObject"]);
+}
+
 }

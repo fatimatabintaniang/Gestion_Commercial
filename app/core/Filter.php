@@ -2,87 +2,69 @@
 
 namespace App\Core;
 
-use App\Core\Abstract\Singleton;
-
-class Filter extends Singleton
+class Filter
 {
-    // Tableau qui va contenir les filtres disponibles (nom du filtre => callback)
+    private static ?Filter $instance = null;
     private array $filters = [];
-    
-    // Tableau des valeurs (paramètres) à utiliser pour les requêtes préparées
     private array $params = [];
-    
-    // La requête SQL construite après application des filtres
-    private string $query = '';
 
-    public function __construct()
+    private function __construct() {}
+
+    public static function getInstance(): Filter
     {
-        // Déclare un filtre 'equals' qui teste l'égalité d'un champ
-        $this->make('equals', function (string $field, $value): string {
-            $this->params[] = $value; // Ajoute la valeur à la liste des paramètres
-            return " AND $field = ?"; // Ajoute une condition SQL avec un placeholder
-        });
-
-        // Déclare un filtre 'date' qui compare seulement la date (ignore l'heure)
-        $this->make('date', function (string $field, $value): string {
-            $this->params[] = $value;
-            return " AND DATE($field) = ?";
-        });
-
-        // Déclare un filtre 'like' qui effectue une recherche partielle (wildcards %)
-        $this->make('like', function (string $field, $value): string {
-            $this->params[] = '%' . $value . '%'; // Encapsule la valeur avec des % pour LIKE
-            return " AND $field LIKE ?";
-        });
-    }
-
-    // Ajoute ou modifie un filtre dans le tableau des filtres
-    public function make(string $filterName, callable $callback): void
-    {
-        $this->filters[$filterName] = $callback;
-    }
-
-    // Applique les filtres passés en paramètre à une requête de base
-    public function apply(string $baseQuery, array $filtersToApply): array
-    {
-        $this->query = $baseQuery; // Initialise la requête avec la requête de base
-        $this->params = [];        // Réinitialise les paramètres
-
-        // Parcourt les filtres à appliquer
-        foreach ($filtersToApply as $field => $filter) {
-            if (is_array($filter)) {
-                // Cas où le filtre est défini comme ['type' => ..., 'value' => ...]
-                $filterName = $filter['type'];
-                $value = $filter['value'];
-            } else {
-                // Cas (moins clair) où la valeur n'est pas un tableau
-                $filterName = $filter;
-                $value = $filtersToApply[$field];
-                unset($filtersToApply[$field]); // Supprime cette entrée (optionnel)
-            }
-
-            // Vérifie que le filtre existe
-            if (!isset($this->filters[$filterName])) {
-                throw new \InvalidArgumentException("Le filtre '$filterName' n'existe pas.");
-            }
-
-            // Ajoute la condition SQL retournée par le callback du filtre
-            $this->query .= call_user_func($this->filters[$filterName], $field, $value);
+        if (self::$instance === null) {
+            self::$instance = new self();
         }
-
-        // Retourne la requête finale et les paramètres associés
-        return ['query' => $this->query, 'params' => $this->params];
+        return self::$instance;
     }
 
-    // Retourne la liste des paramètres accumulés
+    public function addStringFilter(string $field, string $value, string $operator = '=', string $tableAlias = ''): self
+    {
+        $prefix = $tableAlias ? "{$tableAlias}." : "";
+        $paramName = ":{$field}_" . count($this->params);
+        
+        $this->filters[] = "{$prefix}{$field} {$operator} {$paramName}";
+        $this->params[$paramName] = $value;
+        
+        return $this;
+    }
+
+    public function addLikeFilter(string $field, string $value, string $tableAlias = '', bool $caseInsensitive = true): self
+    {
+        $prefix = $tableAlias ? "{$tableAlias}." : "";
+        $paramName = ":{$field}_" . count($this->params);
+        
+        $fieldRef = $caseInsensitive ? "LOWER({$prefix}{$field})" : "{$prefix}{$field}";
+        $this->filters[] = "{$fieldRef} LIKE {$paramName}";
+        $this->params[$paramName] = '%' . strtolower($value) . '%';
+        
+        return $this;
+    }
+
+    public function addDateFilter(string $field, string $value, string $tableAlias = ''): self
+    {
+        $prefix = $tableAlias ? "{$tableAlias}." : "";
+        $paramName = ":{$field}_" . count($this->params);
+        
+        $this->filters[] = "DATE({$prefix}{$field}) = {$paramName}";
+        $this->params[$paramName] = $value;
+        
+        return $this;
+    }
+
+    public function getWhereClause(): string
+    {
+        return !empty($this->filters) ? ' AND ' . implode(' AND ', $this->filters) : '';
+    }
+
     public function getParams(): array
     {
         return $this->params;
     }
 
-    // Retourne la requête SQL complète construite
-    public function getQuery(): string
+    public function reset(): void
     {
-        return $this->query;
+        $this->filters = [];
+        $this->params = [];
     }
 }
