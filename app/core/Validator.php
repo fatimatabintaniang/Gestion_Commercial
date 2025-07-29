@@ -2,13 +2,14 @@
 
 namespace App\Core;
 
-class Validator
+use App\Core\Abstract\Singleton;
+
+class Validator extends Singleton
 {
-    private static ?self $instance = null;
     private array $errors = [];
     private array $rules = [];
 
-    private function __construct()
+    public function __construct()
     {
         // Initialisation des règles de base via make()
         $this->make('required', function ($value, $key, $message = "Ce champ est obligatoire"): bool {
@@ -36,13 +37,7 @@ class Validator
         });
     }
 
-    public static function getInstance(): self
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
+  
 
     public function getErrors(): array
     {

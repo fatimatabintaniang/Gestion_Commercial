@@ -2,19 +2,21 @@
 
 namespace App\Entity;
 
+use App\Core\Abstract\AbstractEntity;
 use DateTime;
 
- class Commande{
+ class Commande extends AbstractEntity{
     private int $id;
     private string $numero;
-    private DateTime $date;
+    private ?DateTime $date ;
     private float $montant;
      private Facture $facture;
      private Produit $produit;
     private Client $client;
+    private $statut;
 
 
-    public function __construct($id = null, $numero = null,$date=null,$montant=null)
+    public function __construct($id = 0, $numero = "",?DateTime $date=null,$montant=0)
     {
         $this->id = $id;
         $this->numero = $numero;
@@ -84,6 +86,30 @@ use DateTime;
     {
         $this->client = $client;
     }
+
+    public function getStatut()
+    {
+        return $this->statut;
+        }
+
+        public function setStatut($statut)
+        {
+            $this->statut = $statut;
+            }
+    public static function toObject(array $array): self   {
+        $c = new self();
+        $c->setId($array['id']);
+        $c->setNumero($array['numero']) ;
+        $c->setMontant($array['montant'])  ;
+        $c->setClient(Client::toObject($array)) ;
+        $c->setStatut($array['statut']) ;
+        return $c;
+    }
+
+    public  function toArray(): array {
+        return [];
+    }
+
 
 
 }

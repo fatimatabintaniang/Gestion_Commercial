@@ -58,7 +58,7 @@ class SecurityController
 
     public function form(): void
     {
-        require_once ROOT_PATH . "/views/security/login.html.php";
+        require_once ROOT_PATH . "/views/pages/security/login.html.php";
         $this->session->deleteFromSession('errors');
         $this->session->deleteFromSession('old');
     }

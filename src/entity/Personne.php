@@ -48,9 +48,19 @@ abstract class Personne extends AbstractEntity
     {
         return $this->prenom;
     }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
     public function setPrenom($prenom)
     {
         $this->prenom = $prenom;
+    }
+
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 
 

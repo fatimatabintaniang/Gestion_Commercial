@@ -42,6 +42,7 @@ use App\Enum\TypePersonne;
         $p->setId($rs['id'] ?? null);
         $p->setNom($rs['nom']);
         $p->setPrenom($rs['prenom']);
+        $p->setEmail($rs['email']);
         $p->setTelephone($rs['telephone']);
         return $p;
     }
