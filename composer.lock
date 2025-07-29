@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0470d8aa5c1fd124c6ff5ba5185e0b1f",
+    "content-hash": "9cb7f69d1ac1f2c1a145a824eaf2ceeb",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -142,6 +142,46 @@
                 }
             ],
             "time": "2024-07-20T21:41:07+00:00"
+        },
+        {
+            "name": "rokhy/paginator-router",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fatyrokhy/paginator-router.git",
+                "reference": "45e535a510c83bd4bee496bf5c9cf6834abc64fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fatyrokhy/paginator-router/zipball/45e535a510c83bd4bee496bf5c9cf6834abc64fd",
+                "reference": "45e535a510c83bd4bee496bf5c9cf6834abc64fd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rokhy\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Faty Rokhy",
+                    "email": "fatyrokhy777@gmail.com"
+                }
+            ],
+            "description": "package pour pagination et routage en php",
+            "support": {
+                "issues": "https://github.com/fatyrokhy/paginator-router/issues",
+                "source": "https://github.com/fatyrokhy/paginator-router/tree/v1.0.1"
+            },
+            "time": "2025-07-24T11:24:39+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",

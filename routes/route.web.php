@@ -42,3 +42,10 @@ Router::addRoute(
     "nouvelleCommande",
     ["auth"],
 );
+
+Router::addRoute(
+    "addCommande",
+    CommandeController::class,
+    "ajoutCommande",
+    ["auth"],
+);
