@@ -25,4 +25,27 @@ class CommandeService extends Singleton
         return $this->commandeRepo->getCommandeById($id);
     }
 
+    public function creerCommande(int $clientId, array $items, float $total): int
+{
+    $numero = 'CMD-' . date('Ymd') . '-' . substr(uniqid(), -4);
+
+    try {
+        $commandeId = $this->commandeRepo->insertCommande([
+            'numero' => $numero,
+            'client_id' => $clientId,
+            'montant' => $total,
+            'date' => date('Y-m-d H:i:s')
+        ]);
+        foreach ($items as $produitId => $item) {
+            $this->commandeRepo->insertLigneCommande([
+                'commande_id' => $commandeId,
+                'produit_id' => $produitId,
+                'quantite' => $item['quantite'],
+            ]);
+        }
+        return $commandeId;
+    } catch (\Exception $e) {
+        throw new \RuntimeException("Erreur lors de la création de la commande : " . $e->getMessage());
+    }
+}
 }

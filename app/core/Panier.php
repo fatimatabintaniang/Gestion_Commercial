@@ -95,4 +95,9 @@ class Panier
     {
         return $this->getPanier()['items'];
     }
+    public function estValide(): bool
+{
+    $panier = $this->getPanier();
+    return !empty($panier['items']) && $panier['client_id'];
+}
 }

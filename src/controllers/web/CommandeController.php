@@ -34,7 +34,6 @@ class CommandeController extends AbstractController
         render_view('commande/listeCommande', "baseLayout", [
             'commandes' => $commandes,
             'client' => $clientData['client'],
-            'openModal' => $clientData['openModal'],
             'panier' => $this->panier->getPanier(),
             'produits' => $produitsDisponibles
         ]);
@@ -54,12 +53,11 @@ class CommandeController extends AbstractController
     private function getClientDataFromRequest(): array
     {
         if (!isset($_GET['tel_client'])) {
-            return ['client' => null, 'openModal' => false];
+            return ['client' => null];
         }
 
         return [
             'client' => $this->personneService->getClientByTel($_GET['tel_client']),
-            'openModal' => true
         ];
     }
 
@@ -68,6 +66,7 @@ class CommandeController extends AbstractController
         $produitId = (int)$_POST['produit_id'];
         $quantite = (int)$_POST['quantite'];
         $produit = $this->produitService->getProduitById($produitId);
+        // dd($produit);
         if ($produit) {
             $this->panier->ajouterProduit(
                 $produit->getId(),
@@ -76,7 +75,7 @@ class CommandeController extends AbstractController
                 $quantite
             );
         }
-        redirect_to("/accueil");
+        redirect_to("/addCommande");
         exit();
     }
 
@@ -85,7 +84,7 @@ class CommandeController extends AbstractController
         $produitId = (int)$_POST['produit_id'];
         $this->panier->retirerProduit($produitId);
 
-        redirect_to("/accueil");
+        redirect_to("/addCommande");
         exit();
     }
 
@@ -94,7 +93,45 @@ class CommandeController extends AbstractController
         $clientId = (int)$_POST['client_id'];
         $this->panier->setClient($clientId);
 
-        redirect_to("/accueil");
+        redirect_to("/addCommande");
         exit();
     }
+
+    public function ajoutCommande(): void
+    {
+        
+        $clientData = $this->getClientDataFromRequest();
+        $produitsDisponibles = $this->produitService->getProduitsDisponibles();
+
+        render_view('commande/ajoutCommande', "baseLayout", [
+            'client' => $clientData['client'],
+            'panier' => $this->panier->getPanier(),
+            'produits' => $produitsDisponibles
+        ]);
+    }
+
+    public function enregistrer(): void
+{
+    $panier = $this->panier->getPanier();
+    
+    if (empty($panier['items']) || !$panier['client_id']) {
+        redirect_to("/addCommande");
+        exit();
+    }
+
+    try {
+        $commandeId = $this->commandeService->creerCommande(
+            $panier['client_id'],
+            $panier['items'],
+            $panier['total']
+        );
+
+        $this->panier->viderPanier();
+        redirect_to("/accueil");
+    } catch (\Exception $e) {
+        $_SESSION['flash_error'] = "Erreur lors de l'enregistrement de la commande: " . $e->getMessage();
+        redirect_to("/addCommande");
+    }
+    exit();
+}
 }

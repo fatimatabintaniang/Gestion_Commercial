@@ -42,3 +42,38 @@ Router::addRoute(
     "nouvelleCommande",
     ["auth"],
 );
+
+Router::addRoute(
+    "addCommande",
+    CommandeController::class,
+    "ajoutCommande",
+    ["auth"],
+);
+
+Router::addRoute(
+    "commande/addProduit",
+    CommandeController::class,
+    "ajouterProduit",
+    ["auth"],
+);
+
+Router::addRoute(
+    "commandes/retirer-produit",
+    CommandeController::class,
+    "retirerProduit",
+    ["auth"],
+);
+
+Router::addRoute(
+    "commandes/set-client",
+    CommandeController::class,
+    "setClient",
+    ["auth"],
+);
+
+Router::addRoute(
+    "commandes/enregistrer",
+    CommandeController::class,
+    "enregistrer",
+    ["auth"],
+);

@@ -4,9 +4,11 @@
                 <h1 class="text-3xl font-bold text-gray-800">Liste des Commandes</h1>
                 <div class="flex items-center gap-4 w-full md:w-auto">
                     <span class="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">Vendeur: <?= $_SESSION['user']->getPrenom() ?? 'Indefined' ?> <?= $_SESSION['user']->getNom() ?? 'Indefined' ?></span>
-                    <button onclick="add_order_modal.showModal()" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity cursor-pointer">
-                        <i class="fas fa-plus mr-2"></i>Nouveau
-                    </button>
+                    <a href="<?= WEB_ROOT?>/addCommande">
+                        <button onclick="add_order_modal.showModal()" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity cursor-pointer">
+                            <i class="fas fa-plus mr-2"></i>Nouveau
+                        </button>
+                    </a>
                 </div>
             </div>
 
