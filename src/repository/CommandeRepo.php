@@ -71,13 +71,13 @@ class CommandeRepo extends AbstractRepository
     public function insertCommande(array $data): int
 {
     $sql = "INSERT INTO commande 
-            (numero, client_id, montant_total, date, deleted) 
-            VALUES (:numero, :client_id, :montant_total, :date, 1)";
+            (numero, client_id, montant, date,statut, deleted) 
+            VALUES (:numero, :client_id, :montant, :date,'impaye', 1)";
     
     $this->executeQuery($sql, [
         'numero' => $data['numero'],
         'client_id' => $data['client_id'],
-        'montant_total' => $data['montant_total'],
+        'montant' => $data['montant'],
         'date' => $data['date']
     ]);
 
@@ -86,16 +86,14 @@ class CommandeRepo extends AbstractRepository
 
 public function insertLigneCommande(array $data): void
 {
-    $sql = "INSERT INTO ligne_commande 
-            (commande_id, produit_id, quantite, prix_unitaire, montant_total) 
-            VALUES (:commande_id, :produit_id, :quantite, :prix_unitaire, :montant_total)";
+    $sql = "INSERT INTO commande_produit 
+            (commande_id, produit_id, quantite) 
+            VALUES (:commande_id, :produit_id, :quantite)";
     
     $this->executeQuery($sql, [
         'commande_id' => $data['commande_id'],
         'produit_id' => $data['produit_id'],
         'quantite' => $data['quantite'],
-        'prix_unitaire' => $data['prix_unitaire'],
-        'montant_total' => $data['montant_total']
     ]);
 }
 }

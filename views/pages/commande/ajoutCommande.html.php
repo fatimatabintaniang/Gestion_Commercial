@@ -36,7 +36,7 @@
                         <form method="post" action="/commandes/set-client">
                             <input type="hidden" name="client_id" value="<?= $client->getId() ?>">
                             <button type="submit" class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                                Client: <?= $client->getNomComplet() ?>
+                                Client: <?= $client->getNom() ?> <?= $client->getPrenom() ?>
                             </button>
                         </form>
                     <?php endif; ?>
@@ -47,7 +47,7 @@
             <div class="space-y-4">
                 <div class="flex justify-between items-center">
                     <h4 class="text-lg font-semibold text-gray-800">Produits</h4>
-                    <form method="post" action="<?= WEB_ROOT ?>/addCommande" class="flex items-center gap-2">
+                    <form method="post" action="<?= WEB_ROOT ?>/commande/addProduit" class="flex items-center gap-2">
                         <select name="produit_id" class="px-2 py-1 border rounded">
                             <?php foreach ($produits as $produit): ?>
                                 <option value="<?= $produit->getId() ?>">

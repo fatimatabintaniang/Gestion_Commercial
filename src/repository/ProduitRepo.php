@@ -15,7 +15,7 @@ class ProduitRepo extends AbstractRepository
 
     public function find(int $id): ?Produit
     {
-        $sql = "SELECT * FROM {$this->table} WHERE id = ? AND deleted = 0";
+        $sql = "SELECT * FROM {$this->table} WHERE id = ?";
         $result = parent::query($sql, [$id], [Produit::class, "toObject"], true);
         return $result ?: null;
     }
