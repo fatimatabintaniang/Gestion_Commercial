@@ -17,11 +17,11 @@ Router::addRoute(
     "form"
 );
 
-Router::addRoute(
-    "", 
-    SecurityController::class, 
-    "form"
-);
+// Router::addRoute(
+//     "", 
+//     SecurityController::class, 
+//     "form"
+// );
 
 Router::addRoute(
     "login", 
